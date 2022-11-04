@@ -1,14 +1,26 @@
-from explainit.app import build
-import pandas as pd
+from dash import Dash, dcc, html, Input, Output
+import os
 
-ref_data = pd.read_csv("https://raw.githubusercontent.com/katonic-dev/explainit/master/examples/data/reference_data.csv", index_col=None)
-prod_data = pd.read_csv("https://raw.githubusercontent.com/katonic-dev/explainit/master/examples/data/production_data.csv", index_col=None)
 
-build(
-  reference_data=ref_data,
-  production_data=prod_data,
-  target_col_name="bad_loan",
-  target_col_type="cat",
-  host="127.0.0.1",
-  port=8050
-)
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+
+app = Dash(__name__, external_stylesheets=external_stylesheets)
+
+server = app.server
+
+app.layout = html.Div([
+    html.H2('Hello World'),
+    dcc.Dropdown(['LA', 'NYC', 'MTL'],
+        'LA',
+        id='dropdown'
+    ),
+    html.Div(id='display-value')
+])
+
+@app.callback(Output('display-value', 'children'),
+                [Input('dropdown', 'value')])
+def display_value(value):
+    return f'You have selected {value}'
+
+if __name__ == '__main__':
+    app.run_server(debug=True)
