@@ -10,5 +10,5 @@ build(
   target_col_name="bad_loan",
   target_col_type="cat",
   host="0.0.0.0",
-  port=8050
+  port=80
 )
